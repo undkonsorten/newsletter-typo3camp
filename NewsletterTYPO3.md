@@ -9,8 +9,13 @@ auto-scaling:
 title: CuteMailing und Co - Newsletter mit TYPO3
 author: Karsten Nowak
 date: März 2024
+footer: 'CuteMailing und Co - Newsletter mit TYPO3 - Talk zum TYPO3 Camp Mitteldeutschland 03/2024'
+style: |
+    a {
+      color: #ccc;
+    }
 ---
-
+<!-- backgroundColor: #213e21 -->
 # Newsletter mit TYPO3 erstellen und versenden
 
 Präsentation von Karsten Nowak zum TYPO3 Camp Mitteldeutschland 14.-16.3.24
@@ -41,8 +46,8 @@ Präsentation von Karsten Nowak zum TYPO3 Camp Mitteldeutschland 14.-16.3.24
 * Für Anlegen der Newsletter und den Versand: `cute_mailing`
   * dabei Nutzung der Extension `task_queue` um die einzelnen Versandvorgänge nacheinander abzuarbeiten
 
-* Foundation für E-Mails, fertig einsetzbar in der Extension `email_templating`
-  * Notwendig auch die Extension `html_mail_utility` (CSS Inliner, Inky Tags umschreiben)
+* Foundation für E-Mails, fertig einsetzbar in der Extension `email_template`
+  * dabei Nutzung der Extension `html_mail_utility` (CSS Inliner, Inky Tags umschreiben)
     * PHP Erweiterung xsl notwendig
 
 ---
@@ -80,11 +85,11 @@ Wollen wir wirklich solchen Code schreiben?
 </container>
 ```
 
-Das ist alles? Ja, diese 3 Angaben, 5 Zeilen Code werden in vielen Zeilen HTML Code umgeschrieben.
+Das ist alles? Ja, diese 3 Angaben, 5 Zeilen Code werden in viele Zeilen HTML Code umgeschrieben.
 
 ---
 
-# Das ist der erzeugt Code aus den 3 Zeilen vorher
+# Das ist der erzeugte Code aus den 5 Zeilen vorher
 
 ```html
 <table align="center" class="container">
@@ -150,38 +155,53 @@ DirectMail war lange das Tool der Wahl für die meisten, ist aber in die Jahre g
 
 * Mittlerweile ist mit `mail` ein direkter Nachfolger im TER und wird auch gepflegt.
 * `luxletter` gibt es auch schon eine Weile.
-* Und jetzt kommen wir mit CuteMailing?
+* Das passte alles aber nicht genau für unsere Anforderungen, daher entwickelten wir CuteMailing.
 
 ---
 
 # CuteMailing "nur" ein Versand Tool?
 
 Ja genau, da ist es! Das war der Grund für uns im Februar 2022 eine solche Extension für TYPO3 zu bauen.
-Es gab damals für uns nichts was wirklich gepasst hatte.
+Wir wollten ein Tool was sich genau um diesen Prozess kümmert.
 
 * `direct_mail` schied aus, da zu alt und nicht zukunftssicher aus unserer Sicht
+  * `mail` gab es damals noch nicht
 * `luxletter` war zu sehr auf fe_user fixiert, damals die MultiSite Konfiguration noch schwierig
 * beide Tools machen noch einiges mehr, was wir gar nicht brauchen oder wollen
-* `mail` gab es damals noch nicht
 
 ---
 
-# Cute Mailing
+# Cute Mailing - Wie läuft das?
 
-* Sys-Ordner für Cutemailing
+* Sys-Ordner für CuteMailing
 * TypoScript Template für Newsletter anlegen
-* Empfängerlisten anlegen
+* Empfängerlisten anlegen (verschiedene Empfängerlistentypen durch zusätzliche Extension bereitgestellt)
 * TYPO3 Seite für Versand anlegen
 * Newsletterdatensatz anlegen mit den üblichen Daten (Empfänger, Subject, Absender)
-* Scheduler oder manuell in der TaskQueue den Versand anstoßen
+* Mittels Scheduler oder manuell in der TaskQueue den Versand anstoßen
   * findet in 2 Schritten statt, 1. Newsletter entpacken, 2. einzelne Mails versenden
 
 ---
 
 Links:
 
-https://extensions.typo3.org/extension/registeraddress
-https://packagist.org/packages/undkonsorten/registeraddress-logger
-https://extensions.typo3.org/extension/cute_mailing
-https://extensions.typo3.org/extension/taskqueue
-https://get.foundation/emails.html
+* https://extensions.typo3.org/extension/registeraddress
+* https://packagist.org/packages/undkonsorten/registeraddress-logger
+* https://github.com/undkonsorten/registeraddress_honeypot
+* https://extensions.typo3.org/extension/cute_mailing
+* https://github.com/undkonsorten/typo3-cute-mailing-registeraddress
+* https://github.com/undkonsorten/typo3-cute-mailing-ttaddress
+* https://extensions.typo3.org/extension/taskqueue
+* https://github.com/undkonsorten/email_template
+* https://github.com/undkonsorten/html_mail_utility
+* https://get.foundation/emails.html
+
+---
+
+
+## Danke für eure Aufmerksamkeit.
+
+### Fragen?
+
+
+
