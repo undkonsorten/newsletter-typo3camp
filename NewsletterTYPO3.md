@@ -8,8 +8,8 @@ auto-scaling:
     - code
 title: CuteMailing und Co - Newsletter mit TYPO3
 author: Karsten Nowak
-date: März 2024
-footer: 'CuteMailing und Co - Newsletter mit TYPO3 - Talk zum TYPO3 Camp Mitteldeutschland 03/2024'
+date: Oktober 2024
+footer: 'CuteMailing und Co - Newsletter mit TYPO3 - Talk zum TYPO3 Camp Berlin/Brandeburg 2024'
 style: |
     a {
       color: #ccc;
@@ -18,7 +18,7 @@ style: |
 <!-- backgroundColor: #213e21 -->
 # Newsletter mit TYPO3 erstellen und versenden
 
-Präsentation von Karsten Nowak zum TYPO3 Camp Mitteldeutschland 14.-16.3.24
+Präsentation von Karsten Nowak zum TYPO3 Camp Berlin Brandenburg 2024
 
 ---
 
