@@ -32,3 +32,7 @@ Add: `-e MARP_USER="$(id -u):$(id -g)"`
 Example:
 
 docker run --rm --init -v $PWD:/home/marp/app/ -e LANG=$LANG -p 37717:37717 -e MARP_USER="$(id -u):$(id -g)" marpteam/marp-cli -w NewsletterTYPO3.md
+
+With html output:
+
+docker run --rm --init -v $PWD:/home/marp/app/ -e LANG=$LANG -p 37717:37717 -e MARP_USER="$(id -u):$(id -g)" marpteam/marp-cli -w T3Monitoring.md --html
