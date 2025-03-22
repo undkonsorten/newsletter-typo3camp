@@ -7,9 +7,9 @@ auto-scaling:
     - math
     - code
 title: CuteMailing und Co - Newsletter mit TYPO3
-author: Karsten Nowak
-date: Oktober 2024
-footer: 'CuteMailing und Co - Newsletter mit TYPO3 - Talk zum TYPO3 Camp Berlin/Brandeburg 2024'
+author: Karsten Nowak /Eike Starkmann
+date: März 2025
+footer: 'CuteMailing und Co - Newsletter mit TYPO3'
 style: |
     a {
       color: #ccc;
@@ -18,7 +18,6 @@ style: |
 <!-- backgroundColor: #213e21 -->
 # Newsletter mit TYPO3 erstellen und versenden
 
-Präsentation von Karsten Nowak zum TYPO3 Camp Berlin Brandenburg 2024
 
 ---
 
@@ -182,6 +181,34 @@ Wir wollten ein Tool was sich genau um diesen Prozess kümmert.
   * findet in 2 Schritten statt, 1. Newsletter entpacken, 2. einzelne Mails versenden
 
 ---
+
+# Exotische Adressliste? Konnektoren!
+
+* CuteMailing hat nur rudimentäre Empfängerliste (kommasepariert)
+* Extensions erweitern dieses Möglichkeit: tt_address_ register address, etc.
+* Damit maximale Freiheit
+
+---
+
+# Asynchrone Verarbeitung Taskqueue
+
++ Ebenfalls eigene Extension
+* Newsletter Task
+  * Rendert Newsletter
+  * Erstellt Versandtask (Mailtask)
+* Ersetzt marker (personalisierung)
+* Verschickt mail
+
+---
+
+# Case study
+
+* One of our clients sends a daily newsletter with currently about 60.000 recipients a day.
+* Möglich mit TYPO3?
+* CuteMailing kann das, (1000 mails ~ 30sec)(Auf Standard Hardware)
+
+---
+
 
 Links:
 
