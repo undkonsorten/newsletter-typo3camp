@@ -43,7 +43,7 @@ style: |
 * Für die An- und Abmeldung: `registeraddress`
   * als Ergänzung: `registeraddress_logger` für das Loggen des An- und Abmeldevorgangs
 * Für Anlegen der Newsletter und den Versand: `cute_mailing`
-  * dabei Nutzung der Extension `task_queue` um die einzelnen Versandvorgänge nacheinander abzuarbeiten
+  * dabei Nutzung der Extension `taskqueue` um die einzelnen Versandvorgänge nacheinander abzuarbeiten
 
 * Foundation für E-Mails, fertig einsetzbar in der Extension `email_template`
   * dabei Nutzung der Extension `html_mail_utility` (CSS Inliner, Inky Tags umschreiben)
