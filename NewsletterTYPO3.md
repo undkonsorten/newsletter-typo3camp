@@ -1,8 +1,6 @@
 ---
-theme: foobar
-class:
-    - lead
-    - invert
+theme: undkonsorten
+paginate: true
 auto-scaling:
     - math
     - code
@@ -10,12 +8,8 @@ title: CuteMailing und Co - Newsletter mit TYPO3
 author: Karsten Nowak /Eike Starkmann
 date: März 2025
 footer: 'CuteMailing und Co - Newsletter mit TYPO3'
-style: |
-    a {
-      color: #ccc;
-    }
 ---
-<!-- backgroundColor: #213e21 -->
+<!-- _class: title -->
 # Newsletter mit TYPO3 erstellen und versenden
 
 
@@ -26,6 +20,8 @@ style: |
 * TYPO3 können und kennen wir! Auch die Redakteure!
 * Inhalte aus TYPO3 verwenden, News nicht doppelt schreiben.
 
+
+---
 
 # Herausforderungen
 
@@ -44,6 +40,8 @@ style: |
   * als Ergänzung: `registeraddress_logger` für das Loggen des An- und Abmeldevorgangs
 * Für Anlegen der Newsletter und den Versand: `cute_mailing`
   * dabei Nutzung der Extension `taskqueue` um die einzelnen Versandvorgänge nacheinander abzuarbeiten
+* Für das Bouncehandling: `rsmbouncemailprocessor`
+  * wertet das Bounce-Postfach aus und bereinigt die Empfängerliste
 
 * Foundation für E-Mails, fertig einsetzbar in der Extension `email_template`
   * dabei Nutzung der Extension `html_mail_utility` (CSS Inliner, Inky Tags umschreiben)
@@ -87,6 +85,8 @@ Wollen wir wirklich solchen Code schreiben?
 Das ist alles? Ja, diese 3 Angaben, 5 Zeilen Code werden in viele Zeilen HTML Code umgeschrieben.
 
 ---
+
+<!-- _class: compact -->
 
 # Das ist der erzeugte Code aus den 5 Zeilen vorher
 
@@ -201,6 +201,65 @@ Wir wollten ein Tool was sich genau um diesen Prozess kümmert.
 
 ---
 
+<p class="kicker">Bouncehandling</p>
+<h2>Bounces automatisch auswerten</h2>
+<hr class="rule" style="margin-bottom:30px">
+<p class="lead" style="font-size:32px">Je mehr Bounces, desto schlechter die <strong>Absender-Reputation</strong> bei Gmail, Yahoo, T-Online &amp; Co. Die Extension <code>rsmbouncemailprocessor</code> räumt automatisch auf.</p>
+<div class="steps" style="margin-top:34px">
+<div class="step"><h3>Versand</h3><p>cute_mailing setzt <code>X-TYPO3RCPT</code>, <code>X-TYPO3NLUID</code>, <code>List-Unsubscribe</code> und den Return-Path.</p></div>
+<div class="step"><h3>Postfach lesen</h3><p>Ein Scheduler-Task liest das Bounce-Postfach per IMAP oder POP3.</p></div>
+<div class="step"><h3>Grund erkennen</h3><p>Regelwerk (per TypoScript erweiterbar): User unknown, Quota, Spam, Out of office … Zähler pro Newsletter und Empfänger.</p></div>
+<div class="step"><h3>Aufräumen</h3><p>Grenzwert erreicht? Die Adresse wird gelöscht und protokolliert.</p></div>
+</div>
+<p class="lead" style="margin-top:30px;font-size:28px">Auch dabei: Abmeldungen über den <strong>List-Unsubscribe-Header</strong> der Mail-Apps werden verarbeitet.</p>
+
+---
+
+<p class="kicker">Bouncehandling · Backend</p>
+<h2>Bounce Report pro Newsletter</h2>
+<hr class="rule" style="margin-bottom:30px">
+<div class="shot"><img src="images/bounce/bounce-report.png" alt="Bounce Report im TYPO3 Backend"></div>
+<p class="caption">Versendete Mails, Bounce-Rate und Gründe pro Newsletter – inklusive Löschen des Reports</p>
+
+---
+
+<p class="kicker">Bouncehandling · Backend</p>
+<h2>Recipient Report pro Empfänger</h2>
+<hr class="rule" style="margin-bottom:30px">
+<div class="shot"><img src="images/bounce/recipient-report.png" alt="Recipient Report im TYPO3 Backend"></div>
+<p class="caption">Suche nach Adresse und Mindestanzahl der Bounces, Gründe je Empfänger, Löschen</p>
+
+---
+
+<p class="kicker">Bouncehandling · Konfiguration</p>
+<h2>Einrichtung in drei Scheduler-Tasks</h2>
+<hr class="rule">
+<div class="cards c3 compact">
+<div class="card"><div class="icon">1</div><h3>Analyze bounce mail</h3><p>Liest IMAP/POP3-Postfach, Anzahl Mails pro Lauf, Mails danach löschen. <strong>Alle 15–30 Minuten.</strong></p></div>
+<div class="card"><div class="icon">2</div><h3>Process bounce mail</h3><p>Löscht Adressen, deren Grenzwert erreicht ist. <strong>Täglich.</strong></p></div>
+<div class="card"><div class="icon">3</div><h3>Clean task queue</h3><p>Optional: alte Taskqueue-Einträge, Reports und Logs entfernen.</p></div>
+</div>
+<div class="cols" style="margin-top:44px">
+<div>
+
+```
+# Page TSconfig des Newsletters
+return_path = bounce@example.com
+reply_to = bounce@example.com
+listunsubscribe_enable = 1
+listunsubscribe_email = bounce@example.com
+```
+
+</div>
+<ul class="arrows small">
+<li><strong>Grenzwerte</strong> pro Grund (<code>deletelimits</code>), <code>0</code> = nie löschen</li>
+<li><strong>Delete-Log</strong> im Listenmodul</li>
+<li>Voraussetzung: PHP <code>imap</code> und ein POP3/IMAP-Postfach</li>
+</ul>
+</div>
+
+---
+
 # Case study
 
 * One of our clients sends a daily newsletter with currently about 60.000 recipients a day.
@@ -219,12 +278,14 @@ Links:
 * https://github.com/undkonsorten/typo3-cute-mailing-registeraddress
 * https://github.com/undkonsorten/typo3-cute-mailing-ttaddress
 * https://extensions.typo3.org/extension/taskqueue
+* https://github.com/undkonsorten/rsmbouncemailprocessor
 * https://github.com/undkonsorten/email_template
 * https://github.com/undkonsorten/html_mail_utility
 * https://get.foundation/emails.html
 
 ---
 
+<!-- _class: title -->
 
 ## Danke für eure Aufmerksamkeit.
 

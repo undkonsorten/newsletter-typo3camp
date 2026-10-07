@@ -1,0 +1,6 @@
+# Marp CLI picks this up automatically (run from the repo root).
+html: true
+allowLocalFiles: true
+themeSet: theme/undkonsorten.css
+bespoke:
+  progress: true

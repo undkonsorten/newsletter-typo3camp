@@ -1,8 +1,6 @@
 ---
-theme: foobar
-class:
-    - lead
-    - invert
+theme: undkonsorten
+paginate: true
 auto-scaling:
     - math
     - code
@@ -10,13 +8,8 @@ title: TYPO3 Installationen mit T3Monitoring überwachen
 author: Karsten Nowak
 date: Oktober 2024
 footer: 'TYPO3 Installationen mit T3Monitoring überwachen - TYPO3 Camp Berlin-Brandenburg 2024'
-style: |
-    a {
-      color: #ccc;
-    }
-    small {font-size:.8em;}
 ---
-<!-- backgroundColor: #213e21 -->
+<!-- _class: title -->
 # TYPO3 Installationen mit T3Monitoring überwachen
 
 Talk zum TYPO3 Camp Berlin-Brandenburg 2024
@@ -73,5 +66,7 @@ Karsten Nowak
 * Ein wichtiger Hinweis in der Doku https://github.com/georgringer/t3monitoring im Abschnitt "Pricing".
 
 ---
+
+<!-- _class: title -->
 
 ## Danke für eure Aufmerksamkeit.
