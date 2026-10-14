@@ -235,7 +235,7 @@
   .versus h3 { font-size: 42px; margin-bottom: 30px; }
   .versus .bad li::before { content: "✕"; color: #cc4b37; }
 
-  .steps { counter-reset: step; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+  .steps { counter-reset: step; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
   .step {
     counter-increment: step;
     background: var(--white);
@@ -524,7 +524,7 @@
       <div class="card">
         <div class="icon">#</div>
         <h3>Minimal data</h3>
-        <p>A random session ID (<code>crypto.randomUUID()</code>) and the messages – nothing more.</p>
+        <p>A server-issued <code>HttpOnly</code> session cookie and the messages – no IP addresses stored.</p>
       </div>
       <div class="card">
         <div class="icon">⏱</div>
@@ -576,7 +576,7 @@
           <li><strong>Retrieval-augmented generation</strong> – answers grounded in your own website</li>
           <li>Indexing via <strong>EXT:index</strong>, vectors in <strong>Qdrant</strong>, any embeddings model</li>
           <li>The model looks things up itself via the <code>similarity_search</code> tool</li>
-          <li><strong>Several bots</strong> with separate knowledge bases – one config, reaction and collection each</li>
+          <li><strong>Several bots</strong> with separate knowledge bases – one configuration and collection each</li>
           <li>“Anything EXT:index can crawl becomes chat knowledge”</li>
         </ul>
       </div>
@@ -623,7 +623,8 @@
       <ul class="arrows small">
         <li><strong>Backend module</strong> – browse sessions, read full conversations, delete</li>
         <li><strong>CSV export</strong> of all or single sessions, pick the columns (questions, answers, system prompt …)</li>
-        <li><strong>TYPO3 Reactions</strong> as the chat endpoint – secured with the reaction secret</li>
+        <li><strong>Built-in chat endpoint</strong> – no API keys or secrets in the page</li>
+        <li><strong>Cost control</strong> – rate limits per IP and session, message length, max tokens, history window</li>
         <li><strong>Scheduler</strong> + CLI for data retention</li>
         <li>Sessions also visible read-only in the List module</li>
         <li>Optional log file <code>var/log/easychat.log</code></li>
@@ -643,8 +644,7 @@
     <div class="steps">
       <div class="step"><h3>Install</h3><p><code>composer require undkonsorten/easychat</code></p></div>
       <div class="step"><h3>Configure LLM</h3><p>Create an EasyChat configuration record: URL, API key, model, system prompt.</p></div>
-      <div class="step"><h3>Add a Reaction</h3><p>Create a TYPO3 Reaction of type <em>EasyChat</em> pointing to the configuration.</p></div>
-      <div class="step"><h3>Place the chatbot</h3><p>Add the <em>Chatbot</em> content element, paste reaction URL &amp; secret. Done!</p></div>
+      <div class="step"><h3>Place the chatbot</h3><p>Add the <em>Chatbot</em> content element and pick the configuration. Done!</p></div>
     </div>
     <p class="lead" style="margin-top:56px;font-size:32px"><strong>Optional extras:</strong> Scheduler task for cleanup · Styled template via static TypoScript · RAG with EXT:index + Qdrant.</p>
   </section>
@@ -668,7 +668,7 @@
       <div class="card"><div class="icon">€</div><h3>No SaaS fees</h3><p>No platform subscription – you only pay for the tokens you use.</p></div>
       <div class="card"><div class="icon">★</div><h3>European hosting</h3><p>Run it with German AI hosting (e.g. mittwald) or fully self-hosted models.</p></div>
       <div class="card"><div class="icon">✎</div><h3>Your content, your answers</h3><p>RAG on your own pages and files – maintained where editors already work.</p></div>
-      <div class="card"><div class="icon">T3</div><h3>Feels like TYPO3</h3><p>Content element, records, Reactions, Scheduler, Fluid – nothing new to learn.</p></div>
+      <div class="card"><div class="icon">T3</div><h3>Feels like TYPO3</h3><p>Content element, records, Scheduler, Fluid – nothing new to learn.</p></div>
     </div>
   </section>
 
@@ -698,7 +698,7 @@
     <h2>Architecture at a glance</h2>
     <hr class="rule" style="margin-bottom:30px">
     <svg class="diagram" viewBox="0 0 1620 650" role="img" aria-labelledby="diag-title">
-      <title id="diag-title">EasyChat architecture: browser to TYPO3 reaction to Symfony AI agent to LLM; sessions in the TYPO3 database cleaned by the scheduler; RAG via EXT:index, embeddings and Qdrant.</title>
+      <title id="diag-title">EasyChat architecture: browser to the TYPO3 chat endpoint to Symfony AI agent to LLM; sessions in the TYPO3 database cleaned by the scheduler; RAG via EXT:index, embeddings and Qdrant.</title>
       <defs>
         <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
           <path d="M0,0 L10,5 L0,10 z" fill="#69aa5c"/>
@@ -723,8 +723,8 @@
         <text x="150" y="345" text-anchor="middle" class="s" fill="#a5bf3c">Deep Chat widget</text>
 
         <rect x="430" y="265" width="300" height="110" fill="#003300"/>
-        <text x="580" y="313" text-anchor="middle" class="t" fill="#fff">TYPO3 Reaction</text>
-        <text x="580" y="345" text-anchor="middle" class="s" fill="#a5bf3c">secured endpoint</text>
+        <text x="580" y="313" text-anchor="middle" class="t" fill="#fff">Chat endpoint</text>
+        <text x="580" y="345" text-anchor="middle" class="s" fill="#a5bf3c">rate-limited · no secrets</text>
 
         <rect x="860" y="265" width="300" height="110" fill="#003300"/>
         <text x="1010" y="313" text-anchor="middle" class="t" fill="#fff">Symfony AI Agent</text>
@@ -790,7 +790,7 @@
     <h2>Built to last</h2>
     <hr class="rule">
     <div class="facts">
-      <div class="fact"><b>12.4 · 13.4</b><span>TYPO3 LTS versions</span></div>
+      <div class="fact"><b>v12 – v14</b><span>TYPO3 12.4, 13.4 and 14.3</span></div>
       <div class="fact"><b>8.2 – 8.5</b><span>PHP versions in CI</span></div>
       <div class="fact"><b>4 DBs</b><span>functional tests on SQLite, MariaDB, MySQL, PostgreSQL</span></div>
       <div class="fact"><b>100 %</b><span>open source on GitHub &amp; TER</span></div>
@@ -821,7 +821,7 @@
       <li><div><strong>Styled widget &amp; consent</strong><br><span>Open the chat, accept the consent, ask a question about the site’s content.</span><br><a class="link-more" href="https://easychat.undkonsorten.com.lan/easychat-styled" target="_blank" rel="noopener">/easychat-styled</a></div></li>
       <li><div><strong>Without consent &amp; default template</strong><br><span>Same bot, different template and consent mode.</span><br><a class="link-more" href="https://easychat.undkonsorten.com.lan/easychat-without-consent" target="_blank" rel="noopener">/easychat-without-consent</a></div></li>
       <li><div><strong>Backend module</strong><br><span>Find the conversation we just had, export it as CSV, delete it.</span><br><a class="link-more" href="https://easychat.undkonsorten.com.lan/typo3/" target="_blank" rel="noopener">TYPO3 backend</a></div></li>
-      <li><div><strong>Configuration &amp; Reaction</strong><br><span>Switch the model from the live dropdown, tweak the system prompt – no deployment needed.</span><br><a class="link-more" href="https://easychat.undkonsorten.com/" target="_blank" rel="noopener">Public demo: easychat.undkonsorten.com</a></div></li>
+      <li><div><strong>Configuration</strong><br><span>Switch the model from the live dropdown, tweak the system prompt – no deployment needed.</span><br><a class="link-more" href="https://easychat.undkonsorten.com/" target="_blank" rel="noopener">Public demo: easychat.undkonsorten.com</a></div></li>
     </ol>
   </section>
 
@@ -834,7 +834,6 @@
       <div>
         <h3>On the roadmap</h3>
         <ul class="arrows small">
-          <li><strong>TYPO3 v14 support</strong></li>
           <li>Better RAG indexing for more content types (tt_content, FAQs)</li>
           <li>More vector stores (PostgreSQL, Redis)</li>
           <li>Answer ratings to improve the knowledge base</li>
